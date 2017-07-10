@@ -3,6 +3,7 @@ body.landing {
  }
 
 .navbar {
+	 position: relative;
      padding: 0.5rem;
      background-color: rgb(101,18,95);
  }
