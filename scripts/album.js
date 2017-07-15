@@ -29,6 +29,21 @@ var albumPicasso = {
          { title: 'Wrong phone number', duration: '2:15'}
      ]
  };
+//we have created an object//
+var albumClassical = {
+     title: 'The 50 Greatest Pieces of Classical Music',
+     artist: 'London Philharmonic Orchestra & David Parry',
+     label: 'unknown',
+     year: '2009',
+     albumArtUrl: 'assets/images/album_covers/05.png',
+     songs: [
+         { title: 'Canon in D Major', duration: '3:30' },
+         { title: 'Finlandia', duration: '8:06' },
+         { title: 'Pavane', duration: '5:07' },
+         { title: 'Cavatin', duration: '4:00'},
+         { title: 'Vocalise', duration: '5:51'}
+     ]
+ };
 
 //template for song rows//
 var createSongRow = function(songNumber, songName, songLength) {
@@ -64,5 +79,4 @@ var setCurrentAlbum = function(album) {
  };
  
  window.onload = function() {
-     setCurrentAlbum(albumMarconi);
- };
+     setCurrentAlbum(albumPicasso);
