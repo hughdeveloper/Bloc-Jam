@@ -58,12 +58,14 @@ var createSongRow = function(songNumber, songName, songLength) {
      return template;
  };
 
+var albumImage;
+
 var setCurrentAlbum = function(album) {
 
      var albumTitle = document.getElementsByClassName('album-view-title')[0];
      var albumArtist = document.getElementsByClassName('album-view-artist')[0];
      var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-     var albumImage = document.getElementsByClassName('album-cover-art')[0];
+     albumImage = document.getElementsByClassName('album-cover-art')[0];
      var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
  
      albumTitle.firstChild.nodeValue = album.title;
@@ -82,7 +84,7 @@ var setCurrentAlbum = function(album) {
      setCurrentAlbum(albumPicasso);
 	 
 	 var albumList = [albumPicasso, albumMarconi, albumClassical];
-	 var i = 1;
+	 var i = 0;
 	 
 	 albumImage.addEventListener("click", function(event) {
 		setCurrentAlbum(albumList[i]);
