@@ -62,16 +62,16 @@ var setCurrentAlbum = function(album) {
      }
  };
 
-var songListContainer = document.getElementsByClassName('album-view-song-item')[0];
+var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
 var songRows = document.getElementsByClassName('album-view-song-item');
 
-var playButtomTemplate = '<a class="album-song-buttom"><span class="ion-play></span></a>';
+var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 
  window.onload = function() {
      setCurrentAlbum(albumMarconi);
 	 
 	 songListContainer.addEventListener('mouseover', function(event) {
-		if (event.target.element.className === 'album-view-song-item') {
+		if (event.target.parentElement.className === 'album-view-song-item') {
 			event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
 		 }
 	 });
