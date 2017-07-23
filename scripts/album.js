@@ -82,10 +82,12 @@ var currentlyPlayingSong = null;
 var findParentByClassName = function (name, targetname) {
 		 if (name) {
 			 var parent = name.parentElement;
-			 while (parent.className !== targetname && parent.className !== null) {
-				 parent = parent.parentElement;
+			 if (parent.className !== targetname) {
+				 console.log("No parent found with that class name");
 			 }
-			 return parent;
+			else if (parent.className !== null) {
+				console.log("No parent found");	
+			}
 		 }
 	 };
 	 
