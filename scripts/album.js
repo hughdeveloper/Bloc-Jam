@@ -146,7 +146,7 @@ var findParentByClassName = function (name, targetname) {
 		}
 	 });
 	 
-	 /*once the mouse leaves the certain row the function will exicute and not display the play buttom but rather display the number. The condition that allows for this will only run if the song is not playing*/
+	 /*once the mouse leaves the certain row the function will execute and not display the play buttom but rather display the number. The condition that allows for this will only run if the song is not playing*/
 	 for (var i = 0; i < songRows.length; i++) {
          songRows[i].addEventListener('mouseleave', function(event) {
              var songItem = getSongItem(event.target);
