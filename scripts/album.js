@@ -54,7 +54,7 @@ var setCurrentAlbum = function(album) {
 	//selects the album's list of music. (the whole list)
      var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
  
-	/*goes and looks at the first child of the album title element then it grabs the nodevalue (the information within the element) of that element and sets it equal to the album.title. It statement displays the title of the element*/
+	/*goes and looks at the first child of the album title element then it grabs the nodevalue (the information within the element) of that element and sets it equal to the album.title. This statement displays the title of the element*/
      albumTitle.firstChild.nodeValue = album.title;
      albumArtist.firstChild.nodeValue = album.artist;
      albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
@@ -149,7 +149,9 @@ var findParentByClassName = function (name, targetname) {
 	 /*once the mouse leaves the certain row the function will execute and not display the play buttom but rather display the number. The condition that allows for this will only run if the song is not playing*/
 	 for (var i = 0; i < songRows.length; i++) {
          songRows[i].addEventListener('mouseleave', function(event) {
+			 //selects the number element
              var songItem = getSongItem(event.target);
+			// console.log(songItem);
 			 var songItemNumber = songItem.getAttribute('data-song-number');
 			  if (songItemNumber != currentlyPlayingSong) {
 				  songItem.innerHTML = songItemNumber;
