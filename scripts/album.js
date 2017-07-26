@@ -1,4 +1,6 @@
- // the albums arrays. usually this information will be pulled from a database
+/* When coding you do not want to pollute the global atmosphere. It can lead to problems when coding with other poeple. This can be solved by making the whole document a in a function. There are other ways of solving this problem. */
+
+// the albums arrays. usually this information will be pulled from a database
 //we have created an object//
 var albumPicasso = {
      title: 'The Colors',
@@ -43,7 +45,8 @@ var createSongRow = function(songNumber, songName, songLength) {
  };
 
 var setCurrentAlbum = function(album) {
-	//slects  the album title
+	/*When using the getElementsBy type of code need to add [0] or something in that nature to the end of it because there can be many elements with the same name and if not used the command will return a list(array) of classes with the same name. There will be times were this is needed, however in this situation we only want to select one thing so that later on in the code we can replace the content within that one elemnt.*/
+	//slects  the album title element
      var albumTitle = document.getElementsByClassName('album-view-title')[0];
 	//selects the album's artist element
      var albumArtist = document.getElementsByClassName('album-view-artist')[0];
@@ -58,13 +61,14 @@ var setCurrentAlbum = function(album) {
      albumTitle.firstChild.nodeValue = album.title;
      albumArtist.firstChild.nodeValue = album.artist;
      albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
+	/*The setAttribute is like find an replace. We are finding what the "src" is pointing to and we replace the old "src" link with a new link which in this case is the album.albumArtUrl*/
      albumImage.setAttribute('src', album.albumArtUrl);
  
      albumSongList.innerHTML = "";
 
-	/*this for loop inputs the information form the album songs into there places starting with the first song and increasing until the list of songs have all gone through the loop*/
+	/* this for loop inputs the information form the album songs into there places starting with the first song and increasing until the list of songs have all gone through the loop */
      for (var i = 0; i < album.songs.length; i++) {
-		 // template estbalishes first number than the song title and then the song duration
+		 /* template estbalishes first number than the song title and then the song duration. The += symbol is used to add another row of html rather than replacing the existing one when it is running through the for loop */
          albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
      }
  };
@@ -134,19 +138,20 @@ var findParentByClassName = function (name, targetname) {
  window.onload = function() {
      setCurrentAlbum(albumMarconi);
 	 
-	 /*This function states that when the mouse is over a certain row that the playbuttom icon will be displayed. The condition that controls this function will only show the play buttom icon if the song is not a curently playing song.*/
+	 /* This function states that when the mouse is over a certain row that the playbuttom icon will be displayed. The condition that controls this function will only show the play buttom icon if the song is not a curently playing song.*/
 	 songListContainer.addEventListener('mouseover', function(event) {
 		if (event.target.parentElement.className === 'album-view-song-item') {
 			/* getSongItem(event.target) finds the element that holds the number*/
 			//console.log(getSongItem(event.target));
 			var songItem = getSongItem(event.target);
+			/* getAttribute doesnt get the whole element number but rather it grabs the acutall number itself. It is kinda like grabbing a nodeValue, it finds what the element itself has within it rather than the whole element*/
 			if (songItem.getAttribute('data-song-number') != currentlyPlayingSong) {
 				songItem.innerHTML = playButtonTemplate;
 			}
 		}
 	 });
 	 
-	 /*once the mouse leaves the certain row the function will execute and not display the play buttom but rather display the number. The condition that allows for this will only run if the song is not playing*/
+	 /* once the mouse leaves the certain row the function will execute and not display the play buttom but rather display the number. The condition that allows for this will only run if the song is not playing*/
 	 for (var i = 0; i < songRows.length; i++) {
          songRows[i].addEventListener('mouseleave', function(event) {
 			 //selects the number element
