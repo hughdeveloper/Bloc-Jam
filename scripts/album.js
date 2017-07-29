@@ -41,35 +41,82 @@ var createSongRow = function(songNumber, songName, songLength) {
       + '</tr>'
       ;
  
-     return template;
+	/* why would we change this into jQuery when it seems like more coding doing it this way than the original way?   ????? */
+    // return template;
+	return $(template);
  };
 
 var setCurrentAlbum = function(album) {
 	/*When using the getElementsBy type of code need to add [0] or something in that nature to the end of it because there can be many elements with the same name and if not used the command will return a list(array) of classes with the same name. There will be times were this is needed, however in this situation we only want to select one thing so that later on in the code we can replace the content within that one elemnt.*/
 	//slects  the album title element
-     var albumTitle = document.getElementsByClassName('album-view-title')[0];
+	
+    // var albumTitle = document.getElementsByClassName('album-view-title')[0];
 	//selects the album's artist element
-     var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+	
+    // var albumArtist = document.getElementsByClassName('album-view-artist')[0];
 	// selects the ablum information element
-     var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+	
+    // var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+	
 	//selects the image element
-     var albumImage = document.getElementsByClassName('album-cover-art')[0];
+	
+    // var albumImage = document.getElementsByClassName('album-cover-art')[0];
+	
 	//selects the album's list of music. (the whole list)
-     var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+	
+    // var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+	
+	
+	
+	
+	var $albumTitle = $('.album-view-title');
+	var $albumArtist = $('.album-view-artist');
+	var $albumReleaseInfo = $('.album-view-release-info');
+	var $albumImage = $('.album-cover-art');
+	var $albumSongList = $('.album-view-song-list');
+	
+	
+	
  
 	/*goes and looks at the first child of the album title element then it grabs the nodevalue (the information within the element) of that element and sets it equal to the album.title. This statement displays the title of the element*/
-     albumTitle.firstChild.nodeValue = album.title;
-     albumArtist.firstChild.nodeValue = album.artist;
-     albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
+	
+     //albumTitle.firstChild.nodeValue = album.title;
+     //albumArtist.firstChild.nodeValue = album.artist;
+     //albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
+	
 	/*The setAttribute is like find an replace. We are finding what the "src" is pointing to and we replace the old "src" link with a new link which in this case is the album.albumArtUrl*/
-     albumImage.setAttribute('src', album.albumArtUrl);
+	
+     //albumImage.setAttribute('src', album.albumArtUrl);
+	
+	
+	/* .text() gets or set the content of the element it is similar to to the nodeValue selector*/
+	$albumTitle.text(album.title);
+	$albumArtist.text(album.artist);
+	$albumReleaseInfo.text(album.year +' '+album.label);
+	
+	/*setAttribute is replaced with jQuery .attr() */
+	$albumImage.attr('src', album.albumArtUrl);
+	
+	
+	
  
-     albumSongList.innerHTML = "";
+     //albumSongList.innerHTML = "";
+	
+	$albumSongList.empty();
 
 	/* this for loop inputs the information form the album songs into there places starting with the first song and increasing until the list of songs have all gone through the loop */
      for (var i = 0; i < album.songs.length; i++) {
 		 /* template estbalishes first number than the song title and then the song duration. The += symbol is used to add another row of html rather than replacing the existing one when it is running through the for loop */
-         albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+		 
+         //albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+		 
+		 /* Rather than adding new rows by adding the template we are seperating the template and calling it a different varible which will be .append() or += to the table */
+		 
+		 var $newRow = createSongRow(i+1, album.songs[i].title, album.songs[i].duration);
+		 $albumSongList.append($newRow);
+		 
+		 
+		 
      }
  };
 
