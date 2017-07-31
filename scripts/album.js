@@ -43,7 +43,30 @@ var createSongRow = function(songNumber, songName, songLength) {
  
 	/* why would we change this into jQuery when it seems like more coding doing it this way than the original way?   ????? */
     // return template;
-	return $(template);
+	// return $(template);
+	var $row =$(template);
+	
+	var clickHandler = function () {
+		//finsh code
+	}
+	
+	var onHover = function(event) {
+		//finish code
+	};
+	
+	var offHover = function(event) {
+		//finish code
+	};
+	
+	
+	// .find is like the querySelector. Here we are finding the song-item-menu in the row that the mouse clicks on
+	$row.find('.song-item-menu').click(clickHandler);
+	
+	//.hover combines two differnet function that were previously used. the mouseover and mouseleaver
+	$row.hover(onHover, offHover);
+	
+	return $row;
+	
  };
 
 var setCurrentAlbum = function(album) {
@@ -120,8 +143,8 @@ var setCurrentAlbum = function(album) {
      }
  };
 
-var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
-var songRows = document.getElementsByClassName('album-view-song-item');
+//var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
+//var songRows = document.getElementsByClassName('album-view-song-item');
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtomTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
@@ -130,7 +153,7 @@ var pauseButtomTemplate = '<a class="album-song-button"><span class="ion-pause">
 var currentlyPlayingSong = null;
 
 /*finding the parent name. going form parent to parent if the targetname is not found and if there is no more parent elements that the while loop will stop looping*/
-var findParentByClassName = function (name, targetname) {
+/*var findParentByClassName = function (name, targetname) {
 		 if (name) {
 			 var parent = name.parentElement;
 			 while (parent.className !== targetname && parent.className !== null) {
@@ -181,8 +204,12 @@ var findParentByClassName = function (name, targetname) {
          	currentlyPlayingSong = songItem.getAttribute('data-song-number');
      	}
 	 };
+	 
+	 */
 
- window.onload = function() {
+
+// is document nessary here ????? can you go with "$(function() {"
+ $(document).ready(function () {
      setCurrentAlbum(albumMarconi);
 	 
 	 /* This function states that when the mouse is over a certain row that the playbuttom icon will be displayed. The condition that controls this function will only show the play buttom icon if the song is not a curently playing song.*/
@@ -215,4 +242,4 @@ var findParentByClassName = function (name, targetname) {
 		});
 		 
      }
- };
+ });
