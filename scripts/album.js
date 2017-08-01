@@ -46,21 +46,49 @@ var createSongRow = function(songNumber, songName, songLength) {
 	// return $(template);
 	var $row =$(template);
 	
-	var clickHandler = function () {
-		//finsh code
+	var clickHandler = function() {
+	var songNumber = $(this).attr('data-song-number');
+
+	if (currentlyPlayingSong !== null) {
+		
+		var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSong + '"]');
+		currentlyPlayingCell.html(currentlyPlayingSong);
 	}
+	if (currentlyPlayingSong !== songNumber) {
+		
+		$(this).html(pauseButtonTemplate);
+		currentlyPlayingSong = songNumber;
+	} else if (currentlyPlayingSong === songNumber) {
+		
+		$(this).html(playButtonTemplate);
+		currentlyPlayingSong = null;
+	}
+};
 	
 	var onHover = function(event) {
-		//finish code
+
+		var songNumElement = $(this).find('.song-item-number');
+		var songNumber = songNumElement.attr('data-song-number');
+		
+		if (currentlyPlayingSong !== songNumber) {
+			songNumElement.html(playButtonTemplate);
+		}
+		
 	};
 	
 	var offHover = function(event) {
-		//finish code
+
+		var songNumElement = $(this).find('.song-item-number');
+		var songNumber = songNumElement.attr('data-song-number');
+		
+		if (currentlyPlayingSong !== songNumber) {
+			songNumElement.html(songNumber);
+		}
 	};
 	
 	
 	// .find is like the querySelector. Here we are finding the song-item-menu in the row that the mouse clicks on
-	$row.find('.song-item-menu').click(clickHandler);
+	$row.find('.song-item-number').click(clickHandler);
 	
 	//.hover combines two differnet function that were previously used. the mouseover and mouseleaver
 	$row.hover(onHover, offHover);
@@ -73,25 +101,6 @@ var setCurrentAlbum = function(album) {
 	/*When using the getElementsBy type of code need to add [0] or something in that nature to the end of it because there can be many elements with the same name and if not used the command will return a list(array) of classes with the same name. There will be times were this is needed, however in this situation we only want to select one thing so that later on in the code we can replace the content within that one elemnt.*/
 	//slects  the album title element
 	
-    // var albumTitle = document.getElementsByClassName('album-view-title')[0];
-	//selects the album's artist element
-	
-    // var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-	// selects the ablum information element
-	
-    // var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-	
-	//selects the image element
-	
-    // var albumImage = document.getElementsByClassName('album-cover-art')[0];
-	
-	//selects the album's list of music. (the whole list)
-	
-    // var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
-	
-	
-	
-	
 	var $albumTitle = $('.album-view-title');
 	var $albumArtist = $('.album-view-artist');
 	var $albumReleaseInfo = $('.album-view-release-info');
@@ -103,10 +112,7 @@ var setCurrentAlbum = function(album) {
  
 	/*goes and looks at the first child of the album title element then it grabs the nodevalue (the information within the element) of that element and sets it equal to the album.title. This statement displays the title of the element*/
 	
-     //albumTitle.firstChild.nodeValue = album.title;
-     //albumArtist.firstChild.nodeValue = album.artist;
-     //albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
-	
+     
 	/*The setAttribute is like find an replace. We are finding what the "src" is pointing to and we replace the old "src" link with a new link which in this case is the album.albumArtUrl*/
 	
      //albumImage.setAttribute('src', album.albumArtUrl);
@@ -117,7 +123,7 @@ var setCurrentAlbum = function(album) {
 	$albumArtist.text(album.artist);
 	$albumReleaseInfo.text(album.year +' '+album.label);
 	
-	/*setAttribute is replaced with jQuery .attr() */
+	/*setAttribute is replaced with jQuery .attr() in this example. It can also getAttribute */
 	$albumImage.attr('src', album.albumArtUrl);
 	
 	
@@ -147,99 +153,17 @@ var setCurrentAlbum = function(album) {
 //var songRows = document.getElementsByClassName('album-view-song-item');
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
-var pauseButtomTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
+var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
 
 //setting the current playing song to none to begin. this is so a song does not automatically start playing.
 var currentlyPlayingSong = null;
 
-/*finding the parent name. going form parent to parent if the targetname is not found and if there is no more parent elements that the while loop will stop looping*/
-/*var findParentByClassName = function (name, targetname) {
-		 if (name) {
-			 var parent = name.parentElement;
-			 while (parent.className !== targetname && parent.className !== null) {
-				 parent = parent.parentElement;
-			 }
-			 return parent;
-		 }
-	 };
-	 
-	 // switch rather than if else statements. Don't need ot use break becasue when you return break is automatically assumed
-	 
-	 var getSongItem = function(element) {
-    switch (element.className) {
-        case 'album-song-button':
-        case 'ion-play':
-        case 'ion-pause':
-            return findParentByClassName(element, 'song-item-number');
-        case 'album-view-song-item':
-            return element.querySelector('.song-item-number');
-        case 'song-item-title':
-        case 'song-item-duration':
-            return findParentByClassName(element, 'album-view-song-item').querySelector('.song-item-number');
-        case 'song-item-number':
-            return element;
-        default:
-            return;
-    }  
-};
-	 
-	 var clickHandler = function(targetElement) {
-		 var songItem = getSongItem(targetElement);
-		 
-		 // if there is no song playing
-		 if (currentlyPlayingSong === null) {
-			 songItem.innerHTML = pauseButtomTemplate;
-			 currentlyPlayingSong = songItem.getAttribute("data-song-number");
-		 }
-		 // if there is a song playing and you click on the same song to pause it
-		 else if (currentlyPlayingSong === songItem.getAttribute("data-song-number")){
-			 songItem.innerHTML = playButtonTemplate;
-			 currentlyPlayingSong = null;
-		 }
-		 //if you click on a different song to play something else
-		 else if (currentlyPlayingSong !== songItem.getAttribute('data-song-number')) {
-         	var currentlyPlayingSongElement = document.querySelector('[data-song-number="' + currentlyPlayingSong + '"]');
-         	currentlyPlayingSongElement.innerHTML = currentlyPlayingSongElement.getAttribute('data-song-number');
-         	songItem.innerHTML = pauseButtomTemplate;
-         	currentlyPlayingSong = songItem.getAttribute('data-song-number');
-     	}
-	 };
-	 
-	 */
+
 
 
 // is document nessary here ????? can you go with "$(function() {"
  $(document).ready(function () {
      setCurrentAlbum(albumMarconi);
 	 
-	 /* This function states that when the mouse is over a certain row that the playbuttom icon will be displayed. The condition that controls this function will only show the play buttom icon if the song is not a curently playing song.*/
-	 songListContainer.addEventListener('mouseover', function(event) {
-		if (event.target.parentElement.className === 'album-view-song-item') {
-			/* getSongItem(event.target) finds the element that holds the number*/
-			//console.log(getSongItem(event.target));
-			var songItem = getSongItem(event.target);
-			/* getAttribute doesnt get the whole element number but rather it grabs the acutall number itself. It is kinda like grabbing a nodeValue, it finds what the element itself has within it rather than the whole element*/
-			if (songItem.getAttribute('data-song-number') != currentlyPlayingSong) {
-				songItem.innerHTML = playButtonTemplate;
-			}
-		}
-	 });
-	 
-	 /* once the mouse leaves the certain row the function will execute and not display the play buttom but rather display the number. The condition that allows for this will only run if the song is not playing*/
-	 for (var i = 0; i < songRows.length; i++) {
-         songRows[i].addEventListener('mouseleave', function(event) {
-			 //selects the number element
-             var songItem = getSongItem(event.target);
-			// console.log(songItem);
-			 var songItemNumber = songItem.getAttribute('data-song-number');
-			  if (songItemNumber != currentlyPlayingSong) {
-				  songItem.innerHTML = songItemNumber;
-			  }
-         });
-		 
-		songRows[i].addEventListener('click', function(event) {
-			clickHandler(event.target);
-		});
-		 
-     }
+
  });
