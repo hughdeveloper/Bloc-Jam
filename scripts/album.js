@@ -24,6 +24,8 @@ var createSongRow = function(songNumber, songName, songLength) {
 	}
 	if (currentlyPlayingSongNumber !== songNumber) {
 		$(this).html(pauseButtonTemplate);
+		
+		//do not use function setSong here
 		currentlyPlayingSongNumber = songNumber;
 		currentSongFromAlbum = currentAlbum.songs[songNumber -1];
 		updatePlayerBarSong();
