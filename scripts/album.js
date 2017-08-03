@@ -1,37 +1,5 @@
 /* When coding you do not want to pollute the global atmosphere. It can lead to problems when coding with other poeple. This can be solved by making the whole document a in a function. There are other ways of solving this problem. */
 
-// the albums arrays. usually this information will be pulled from a database
-//we have created an object//
-var albumPicasso = {
-     title: 'The Colors',
-     artist: 'Pablo Picasso',
-     label: 'Cubism',
-     year: '1881',
-     albumArtUrl: 'assets/images/album_covers/01.png',
-     songs: [
-         { title: 'Blue', duration: '4:26' },
-         { title: 'Green', duration: '3:14' },
-         { title: 'Red', duration: '5:01' },
-         { title: 'Pink', duration: '3:21'},
-         { title: 'Magenta', duration: '2:15'}
-     ]
- };
-// We have created a object//
- var albumMarconi = {
-     title: 'The Telephone',
-     artist: 'Guglielmo Marconi',
-     label: 'EM',
-     year: '1909',
-     albumArtUrl: 'assets/images/album_covers/20.png',
-     songs: [
-         { title: 'Hello, Operator?', duration: '1:01' },
-         { title: 'Ring, ring, ring', duration: '5:01' },
-         { title: 'Fits in your pocket', duration: '3:21'},
-         { title: 'Can you hear me now?', duration: '3:14' },
-         { title: 'Wrong phone number', duration: '2:15'}
-     ]
- };
-
 //template for song rows//
 var createSongRow = function(songNumber, songName, songLength) {
      var template =
@@ -49,19 +17,23 @@ var createSongRow = function(songNumber, songName, songLength) {
 	var clickHandler = function() {
 	var songNumber = $(this).attr('data-song-number');
 
-	if (currentlyPlayingSong !== null) {
+	if (currentlyPlayingSongNumber !== null) {
 		
-		var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSong + '"]');
-		currentlyPlayingCell.html(currentlyPlayingSong);
+		var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
+		currentlyPlayingCell.html(currentlyPlayingSongNumber);
 	}
-	if (currentlyPlayingSong !== songNumber) {
-		
+	if (currentlyPlayingSongNumber !== songNumber) {
 		$(this).html(pauseButtonTemplate);
-		currentlyPlayingSong = songNumber;
-	} else if (currentlyPlayingSong === songNumber) {
+		currentlyPlayingSongNumber = songNumber;
+		currentSongFromAlbum = currentAlbum.songs[songNumber -1];
+		updatePlayerBarSong();
+		} 
 		
+	else if (currentlyPlayingSongNumber === songNumber) {
 		$(this).html(playButtonTemplate);
-		currentlyPlayingSong = null;
+		$('.main-controls .play-pause').html(playerBarPlayButton);
+		currentlyPlayingSongNumber = null;
+		currentSongFromAlbum = null;
 	}
 };
 	
@@ -70,7 +42,7 @@ var createSongRow = function(songNumber, songName, songLength) {
 		var songNumElement = $(this).find('.song-item-number');
 		var songNumber = songNumElement.attr('data-song-number');
 		
-		if (currentlyPlayingSong !== songNumber) {
+		if (currentlyPlayingSongNumber !== songNumber) {
 			songNumElement.html(playButtonTemplate);
 		}
 		
@@ -81,10 +53,46 @@ var createSongRow = function(songNumber, songName, songLength) {
 		var songNumElement = $(this).find('.song-item-number');
 		var songNumber = songNumElement.attr('data-song-number');
 		
-		if (currentlyPlayingSong !== songNumber) {
+		if (currentlyPlayingSongNumber !== songNumber) {
 			songNumElement.html(songNumber);
 		}
 	};
+
+	
+	
+	
+	
+	
+	
+	var updatePlayerBarSong = function (event, currentAlbum) {
+		var songName = $(this).find('.song-name');
+		var songArtist = $(this).find('.artist-name');
+		var songDisplayMobile = $(this).find('.artist-song-mobile');
+		
+		
+		var currentlyPlayingSongName = currentAlbum.songs[currentlyPlayingSongNumber-1].title;
+		var currentlyPlayingSongArtist = currentAlbum.artist;
+		
+		
+		$('.songName').text(currentlyPlayingSongName);
+		$('.songArtist').text(currentlyPlayingSongArtist);
+		$(songDisplayMobile).text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
+		 
+		
+		
+		
+		
+		
+		$('.main-controls .play-pause').html(playerBarPauseButton);
+	};
+
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	// .find is like the querySelector. Here we are finding the song-item-menu in the row that the mouse clicks on
@@ -99,6 +107,8 @@ var createSongRow = function(songNumber, songName, songLength) {
 
 var setCurrentAlbum = function(album) {
 	/*When using the getElementsBy type of code need to add [0] or something in that nature to the end of it because there can be many elements with the same name and if not used the command will return a list(array) of classes with the same name. There will be times were this is needed, however in this situation we only want to select one thing so that later on in the code we can replace the content within that one elemnt.*/
+	
+	currentAlbum = album;
 	//slects  the album title element
 	
 	var $albumTitle = $('.album-view-title');
@@ -149,21 +159,36 @@ var setCurrentAlbum = function(album) {
      }
  };
 
+
+var trackIndex = function(album,song) {
+	return album.songs.indexOf(song);
+}
+
+
+
 //var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
 //var songRows = document.getElementsByClassName('album-view-song-item');
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
+var playerBarPlayButtom = '<span class="ion-play></span>';
+var playerBarPauseButtom = '<span class="ion-pause></span>';
 
-//setting the current playing song to none to begin. this is so a song does not automatically start playing.
-var currentlyPlayingSong = null;
+
+// these are all in the global scope because it is used by muliple functions throughout the file
+
+//current playing album
+var currentAlbum = null;
+//the song number that is playing
+var currentlyPlayingSongNumber = null;
+// holds the playing song object from the songs array
+var currentSongFromAlbum = null;
 
 
 
 
 // is document nessary here ????? can you go with "$(function() {"
  $(document).ready(function () {
-     setCurrentAlbum(albumMarconi);
-	 
+	 setCurrentAlbum(albumPicasso);
 
  });
