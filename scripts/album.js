@@ -26,7 +26,7 @@ var createSongRow = function(songNumber, songName, songLength) {
 		$(this).html(pauseButtonTemplate);
 		
 		// ***** do not use function setSong, it wont show the pause buttom when a song is so called playing
-		setSong(songNumber);
+		currentlyPlayingSongNumber = songNumber;
 		currentSongFromAlbum = currentAlbum.songs[songNumber -1];
 		updatePlayerBarSong();
 		} 
