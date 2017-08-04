@@ -25,7 +25,7 @@ var createSongRow = function(songNumber, songName, songLength) {
 	if (currentlyPlayingSongNumber !== songNumber) {
 		$(this).html(pauseButtonTemplate);
 		
-		// ***** do not use function setSong, it wont show the pause buttom when a song is so called playing
+		// ***** do not use function setSong, it wont show the pause button when a song is so called playing
 		currentlyPlayingSongNumber = songNumber;
 		currentSongFromAlbum = currentAlbum.songs[songNumber -1];
 		updatePlayerBarSong();
@@ -211,7 +211,7 @@ var previousSong = function () {
 
 var setSong = function (songNumber) {
 	currentlyPlayingSongNumber = parseInt(songNumber);
-	currentSongFromAlbum = currentAlbum.songs[songNumber-1];
+    currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
 };
 
 var getSongNumberCell = function (number) {
@@ -250,8 +250,8 @@ var $nextButton = $('.main-controls .next');
 // is document nessary here ????? can you go with "$(function() {"
  $(document).ready(function () {
 	 setCurrentAlbum(albumPicasso);
-	 //when we click on the previous buttom we will run the fuction previousSong
+	 //when we click on the previous button we will run the fuction previousSong
 	 $previousButton.click(previousSong);
-	 //when we click on the next buttom we will run the function nextSong
+	 //when we click on the next button we will run the function nextSong
 	 $nextButton.click(nextSong);
  });
