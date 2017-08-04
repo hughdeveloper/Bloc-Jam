@@ -25,8 +25,8 @@ var createSongRow = function(songNumber, songName, songLength) {
 	if (currentlyPlayingSongNumber !== songNumber) {
 		$(this).html(pauseButtonTemplate);
 		
-		//do not use function setSong here
-		currentlyPlayingSongNumber = songNumber;
+		// ***** do not use function setSong, it wont show the pause buttom when a song is so called playing
+		setSong(songNumber);
 		currentSongFromAlbum = currentAlbum.songs[songNumber -1];
 		updatePlayerBarSong();
 		} 
@@ -145,7 +145,7 @@ var setCurrentAlbum = function(album) {
 var updatePlayerBarSong = function () {
 		var $songName = $('.currently-playing .song-name');
 		var $songArtist = $('.currently-playing .artist-name');
-		var $songDisplayMobile = $('.currently-playing .artisit-song-mobile');
+		var $songDisplayMobile = $('.currently-playing .artist-song-mobile');
 		
 		
 		$songName.text(currentSongFromAlbum.title);
