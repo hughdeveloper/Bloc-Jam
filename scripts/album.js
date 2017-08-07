@@ -235,15 +235,20 @@ var trackIndex = function(album,song) {
 };
 
 var togglePlayFromPlayerBar = function () {
+	var songNumElement = $(this).find('.song-item-number');
+	var songNumber = parseInt(songNumElement.attr('data-song-number'));
+	
 		 if (currentSoundFile.isPaused()) {
 			 $(this).html(pauseButtonTemplate);
 			$('.main-controls .play-pause').html(playerBarPauseButton);
+			songNumElement.html(pauseButtonTemplate);
 			// the music starts playing
 			currentSoundFile.play();
 		 }
 		 else {
 			 $(this).html(playButtonTemplate);
 			$('.main-controls .play-pause').html(playerBarPlayButton);
+			 songNumElement.html(songNumber);
 			// the music stops playing
 			currentSoundFile.pause();
 		 }
