@@ -234,6 +234,22 @@ var trackIndex = function(album,song) {
 	return album.songs.indexOf(song);
 };
 
+var togglePlayFromPlayerBar = function () {
+		 if (currentSoundFile.isPaused()) {
+			 $(this).html(pauseButtonTemplate);
+			$('.main-controls .play-pause').html(playerBarPauseButton);
+			// the music starts playing
+			currentSoundFile.play();
+		 }
+		 else {
+			 $(this).html(playButtonTemplate);
+			$('.main-controls .play-pause').html(playerBarPlayButton);
+			// the music stops playing
+			currentSoundFile.pause();
+		 }
+	 };
+
+
 
 
 //var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
@@ -254,6 +270,7 @@ var currentlyPlayingSongNumber = null;
 var currentSongFromAlbum = null;
 var currentSoundFile = null;
 var currentVolume = 80;
+var $playPauseButtomBar = $('.main-controls .play-pause');
 
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
@@ -267,4 +284,8 @@ var $nextButton = $('.main-controls .next');
 	 $previousButton.click(previousSong);
 	 //when we click on the next button we will run the function nextSong
 	 $nextButton.click(nextSong);
+	 
+	 $playPauseButtomBar.click(togglePlayFromPlayerBar);
+	 
+	 
  });
