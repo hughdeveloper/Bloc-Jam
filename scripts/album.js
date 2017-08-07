@@ -15,7 +15,7 @@ var createSongRow = function(songNumber, songName, songLength) {
 	var $row =$(template);
 	
 	var clickHandler = function() {
-	var songNumber = $(this).attr('data-song-number');
+	var songNumber = parseInt($(this).attr('data-song-number'));
 
 	if (currentlyPlayingSongNumber !== null) {
 		
@@ -237,18 +237,19 @@ var trackIndex = function(album,song) {
 var togglePlayFromPlayerBar = function () {
 	var songNumElement = $(this).find('.song-item-number');
 	var songNumber = parseInt(songNumElement.attr('data-song-number'));
+	var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
 	
 		 if (currentSoundFile.isPaused()) {
 			 $(this).html(pauseButtonTemplate);
 			$('.main-controls .play-pause').html(playerBarPauseButton);
-			songNumElement.html(pauseButtonTemplate);
+			currentlyPlayingCell.html(pauseButtonTemplate);
 			// the music starts playing
 			currentSoundFile.play();
 		 }
 		 else {
 			 $(this).html(playButtonTemplate);
 			$('.main-controls .play-pause').html(playerBarPlayButton);
-			 songNumElement.html(songNumber);
+			 currentlyPlayingCell.html(playButtonTemplate);
 			// the music stops playing
 			currentSoundFile.pause();
 		 }
