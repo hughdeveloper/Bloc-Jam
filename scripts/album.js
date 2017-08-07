@@ -25,25 +25,32 @@ var createSongRow = function(songNumber, songName, songLength) {
 	if (currentlyPlayingSongNumber !== songNumber) {
 		$(this).html(pauseButtonTemplate);
 		
-		// ***** do not use function setSong, it wont show the pause button when a song is so called playing
-		currentlyPlayingSongNumber = songNumber;
+		// ***** do not use function setSong, it wont show the pause button when a song is so called playing. This happened because when we concole log the currentlyPlayingSongNumber as well as the SongNumber we notcie that one is a interger and the other is a string. Becasue of this our conditional statement was always true since a string does not equal a interger.
+		setSong(songNumber);
+		currentSoundFile.play();
 		currentSongFromAlbum = currentAlbum.songs[songNumber -1];
 		updatePlayerBarSong();
 		} 
 		
 	else if (currentlyPlayingSongNumber === songNumber) {
-		$(this).html(playButtonTemplate);
-		$('.main-controls .play-pause').html(playerBarPlayButton);
-		setSong(null);
-		currentSongFromAlbum = null;
+		if (currentSoundFile.isPaused()) {
+			$(this).html(pauseButtonTemplate);
+			$('.main-controls .play-pause').html(playerBarPauseButton);
+			currentSoundFile.play();
+		}
+		else {
+			$(this).html(playButtonTemplate);
+			$('.main-controls .play-pause').html(playerBarPlayButton);
+			currentSoundFile.pause();
+		}
 	}
 };
 	
 	var onHover = function(event) {
 
 		var songNumElement = $(this).find('.song-item-number');
-		var songNumber = songNumElement.attr('data-song-number');
-		
+		var songNumber = parseInt(songNumElement.attr('data-song-number'));
+		//console.log(currentlyPlayingSongNumber, songNumber, currentlyPlayingSongNumber !== songNumber);
 		if (currentlyPlayingSongNumber !== songNumber) {
 			songNumElement.html(playButtonTemplate);
 		}
@@ -53,27 +60,14 @@ var createSongRow = function(songNumber, songName, songLength) {
 	var offHover = function(event) {
 
 		var songNumElement = $(this).find('.song-item-number');
-		var songNumber = songNumElement.attr('data-song-number');
-		
+		var songNumber = parseInt(songNumElement.attr('data-song-number'));
+		//console.log(currentlyPlayingSongNumber, songNumber, currentlyPlayingSongNumber !== songNumber);
 		if (currentlyPlayingSongNumber !== songNumber) {
 			songNumElement.html(songNumber);
 			
 		console.log("songNumber type is " + typeof songNumber + "\n and currentlyPlayingSongNumber type is " + typeof currentlyPlayingSongNumber);
 		}
 	};
-
-	
-var songNumber = parseInt($(this).attr('data-song-number'));	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -171,6 +165,7 @@ var nextSong = function() {
     }
     var lastSongNumber = currentlyPlayingSongNumber;
     setSong(currentSongIndex + 1);
+	currentSoundFile.play();
     currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
     updatePlayerBarSong();
 
@@ -195,6 +190,7 @@ var previousSong = function () {
 
     // Set a new current song
     setSong(currentSongIndex + 1);
+	currentSoundFile.play();
     currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
 
     // Update the Player Bar information
@@ -210,9 +206,24 @@ var previousSong = function () {
 };
 
 var setSong = function (songNumber) {
+	if (currentSoundFile) {
+         currentSoundFile.stop();
+     }
 	currentlyPlayingSongNumber = parseInt(songNumber);
     currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+	
+	currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
+		formats: ['mp3'],
+		preload: true
+	});
+	setVolume(currentVolume);
 };
+
+ var setVolume = function(volume) {
+     if (currentSoundFile) {
+         currentSoundFile.setVolume(volume);
+     }
+ };
 
 var getSongNumberCell = function (number) {
 	return $('.song-item-number[data-song-number="' + number + '"]');
@@ -241,6 +252,8 @@ var currentAlbum = null;
 var currentlyPlayingSongNumber = null;
 // holds the playing song object from the songs array
 var currentSongFromAlbum = null;
+var currentSoundFile = null;
+var currentVolume = 80;
 
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
