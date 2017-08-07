@@ -236,7 +236,6 @@ var trackIndex = function(album,song) {
 
 var togglePlayFromPlayerBar = function () {
 	var songNumElement = $(this).find('.song-item-number');
-	var songNumber = parseInt(songNumElement.attr('data-song-number'));
 	var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
 	
 		 if (currentSoundFile.isPaused()) {
