@@ -76,7 +76,7 @@ var seek = function(time) {
 	}
 }
 
-/*var setCurrentTimeInPlayerBar(currentTime) {
+var setCurrentTimeInPlayerBar(currentTime) {
 	var $songDuration = $('.currently-playing .song-name');
 	
 	
@@ -93,10 +93,14 @@ var setTotalTimeInPlayerBar = function (totalTime) {
 
 var filterTimeCode = function (timeInSeconds) {
 	
+	var timeSec = parseFloat(timeInSeconds);
+	var minutes = Math.floor(timeInSec); 
+	var seconds = timeInSeconds/60;
+	
+	var time = minutes+':'+timeSec.charAt[1]+timeSec.charAt[2];
 	
 	
-	
-};*/
+};
 
 var createSongRow = function(songNumber, songName, songLength) {
      var template =
