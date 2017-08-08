@@ -229,7 +229,6 @@ var getSongNumberCell = function (number) {
 	return $('.song-item-number[data-song-number="' + number + '"]');
 };
 
-
 var trackIndex = function(album,song) {
 	return album.songs.indexOf(song);
 };
@@ -254,6 +253,16 @@ var togglePlayFromPlayerBar = function () {
 		 }
 	 };
 
+var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
+	var offsetXPercent = seekBarFillRatio*100;
+	
+	offsetXPercent = Math.max(0, offsetXPercent);
+	offsetXPercent = Math.min(100, offsetXPercent);
+	
+	var percentageString = offsetXPercent + '%';
+	$seekBar.find('.fill').wifth(percentageString);
+	$seekBar.find('.thumb').css({left: percentageString});
+};
 
 
 
