@@ -24,6 +24,12 @@ var setupSeekBars = function() {
          
          var seekBarFillRatio = offsetX / barWidth;
  
+		 if ($(this).parent().attr('class') == 'seek-control') {
+            seek(seekBarFillRatio * currentSoundFile.getDuration());
+        } else {
+            setVolume(seekBarFillRatio * 100);   
+        }
+		 
          updateSeekPercentage($(this), seekBarFillRatio);
      });
 	
@@ -35,6 +41,12 @@ var setupSeekBars = function() {
              var offsetX = event.pageX - $seekBar.offset().left;
              var barWidth = $seekBar.width();
              var seekBarFillRatio = offsetX / barWidth;
+			 
+			 if ($seekBar.parent().attr('class') == 'seek-control') {
+                seek(seekBarFillRatio * currentSoundFile.getDuration());   
+            } else {
+                setVolume(seekBarFillRatio);
+            }
  
              updateSeekPercentage($seekBar, seekBarFillRatio);
          });
@@ -45,6 +57,46 @@ var setupSeekBars = function() {
          });
      });
  };
+
+var updateSeekBarWhileSongPlays = function() {
+	if (currentSoundFile) {
+		currentSoundFile.bind('timeupdate', function(event) {
+			var seekBarFillRatio = this.getTime() / this.getDuration();
+			var $seekBar = $('.seek-control .seek-bar');
+			
+			updateSeekPercentage($seekBar, seekBarFillRatio);
+		});
+	}
+};
+
+var seek = function(time) {
+	//look into truthy and falsy. All values are considered truthy unless they are defined as falsy. Some examples of falsy is e.g. (false, 0, null, undefined, NaN)
+	if (currentSoundFile) {
+		currentSoundFile.setTime(time);
+	}
+}
+
+/*var setCurrentTimeInPlayerBar(currentTime) {
+	var $songDuration = $('.currently-playing .song-name');
+	
+	
+	
+};
+
+var setTotalTimeInPlayerBar = function (totalTime) {
+	var $songTotalTime = $('.currently-playing .total-time');
+	
+	$songTotalTime.text();
+	
+	
+};
+
+var filterTimeCode = function (timeInSeconds) {
+	
+	
+	
+	
+};*/
 
 var createSongRow = function(songNumber, songName, songLength) {
      var template =
@@ -61,6 +113,8 @@ var createSongRow = function(songNumber, songName, songLength) {
 	
 	var clickHandler = function() {
 	var songNumber = parseInt($(this).attr('data-song-number'));
+	
+	
 
 	if (currentlyPlayingSongNumber !== null) {
 		
@@ -73,7 +127,14 @@ var createSongRow = function(songNumber, songName, songLength) {
 		// ***** do not use function setSong, it wont show the pause button when a song is so called playing. This happened because when we concole log the currentlyPlayingSongNumber as well as the SongNumber we notcie that one is a interger and the other is a string. Becasue of this our conditional statement was always true since a string does not equal a interger.
 		setSong(songNumber);
 		currentSoundFile.play();
+		updateSeekBarWhileSongPlays();
 		currentSongFromAlbum = currentAlbum.songs[songNumber -1];
+		
+		var $volumeFill = $('.volume .fill');
+		var $volumeThumb = $('.volume .thimb');
+		$volumeFill.width(currentVolume + '%');
+		$volumeThumb.css({left: currentVolume + '%'});
+		
 		updatePlayerBarSong();
 		} 
 		
@@ -82,6 +143,7 @@ var createSongRow = function(songNumber, songName, songLength) {
 			$(this).html(pauseButtonTemplate);
 			$('.main-controls .play-pause').html(playerBarPauseButton);
 			currentSoundFile.play();
+			updateSeekBarWhileSongPlays();
 		}
 		else {
 			$(this).html(playButtonTemplate);
@@ -211,6 +273,7 @@ var nextSong = function() {
     var lastSongNumber = currentlyPlayingSongNumber;
     setSong(currentSongIndex + 1);
 	currentSoundFile.play();
+	updateSeekBarWhileSongPlays();
     currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
     updatePlayerBarSong();
 
@@ -236,6 +299,7 @@ var previousSong = function () {
     // Set a new current song
     setSong(currentSongIndex + 1);
 	currentSoundFile.play();
+	updateSeekBarWhileSongPlays();
     currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
 
     // Update the Player Bar information
