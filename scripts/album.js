@@ -76,30 +76,10 @@ var seek = function(time) {
 	}
 }
 
-var setCurrentTimeInPlayerBar(currentTime) {
-	var $songDuration = $('.currently-playing .song-name');
+var setCurrentTimeInPlayerBar = function (currentTime) {
+	var $currentTime = $('.currently-playing .current-time');
 	
-	
-	
-};
-
-var setTotalTimeInPlayerBar = function (totalTime) {
-	var $songTotalTime = $('.currently-playing .total-time');
-	
-	$songTotalTime.text();
-	
-	
-};
-
-var filterTimeCode = function (timeInSeconds) {
-	
-	var timeSec = parseFloat(timeInSeconds);
-	var minutes = Math.floor(timeInSec); 
-	var seconds = timeInSeconds/60;
-	
-	var time = minutes+':'+timeSec.charAt[1]+timeSec.charAt[2];
-	
-	
+	$currentTime.text(currentTime);
 };
 
 var createSongRow = function(songNumber, songName, songLength) {
