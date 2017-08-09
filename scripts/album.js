@@ -76,11 +76,67 @@ var seek = function(time) {
 	}
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var setCurrentTimeInPlayerBar = function (currentTime) {
 	var $currentTime = $('.currently-playing .current-time');
 	
 	$currentTime.text(currentTime);
 };
+
+var setTotalTimeInPlayerBar = function (totalTime) {
+	var $totalTime = $('.currently-playing .total-time');
+	
+	$totalTime.text(totalTime);
+};
+
+var filterTimeCode = function(timeInSeconds) {
+	var timeFormat = "x:xx"
+	var timeInMinutes = "'"+parseFloat(timeInSeconds/60)+ "'";
+	
+	
+	if (timeInSeconds/60 < 10) {
+		timeFormat = timeInMinutes.charAt(1) + ':' + timeInMinutes.charAt(3) + timeInMinutes.charAt(4);
+	}
+	
+	else if (timeInSeconds/60 >= 10 && timeInSeconds/60/60 < 1) {
+				timeFormat = timeInMinutes.charAt(1) + timeInMinutes.charAt(2) + ':' + timeInMinutes.charAt(4) + timeInMinutes.charAt(5);
+	}
+	else if (timeInSeconds/60/60 > 1) {
+		var timeInHours = "'"+parseFloat(timeInSeconds/60/60)+ "'";
+		timeFormat = timeInHours.charAt(1) + ':' + timeInHours.charAt(3) + timeInHours.charAt(4) + ':' + timeInHours.charAt(5) + timeInHours.charAt(6);
+	}
+	return timeFormat;
+};
+
+
+
+
+
+
+
+
+
+
+
 
 var createSongRow = function(songNumber, songName, songLength) {
      var template =
