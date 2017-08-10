@@ -65,6 +65,7 @@ var updateSeekBarWhileSongPlays = function() {
 			var $seekBar = $('.seek-control .seek-bar');
 			
 			updateSeekPercentage($seekBar, seekBarFillRatio);
+			setCurrentTimeInPlayerBar(currentSoundFile);
 		});
 	}
 };
@@ -99,30 +100,35 @@ var seek = function(time) {
 var setCurrentTimeInPlayerBar = function (currentTime) {
 	var $currentTime = $('.currently-playing .current-time');
 	
-	$currentTime.text(currentTime);
+	$currentTime.text(filterTimeCode(currentTime));
 };
 
 var setTotalTimeInPlayerBar = function (totalTime) {
 	var $totalTime = $('.currently-playing .total-time');
 	
-	$totalTime.text(totalTime);
+	$totalTime.text(filterTimeCode(totalTime));
 };
 
 var filterTimeCode = function(timeInSeconds) {
 	var timeFormat = "x:xx"
-	var timeInMinutes = "'"+parseFloat(timeInSeconds/60)+ "'";
+	
+	
+	var timeForMinutes = "'"+parseInt(timeInSeconds/60)+ "'";
+	var timeForSeconds = "'"+parseInt(((parseFloat(timeInSeconds/60))-(parseInt(timeInSeconds/60)))*60)+"'";
+	
+	
 	
 	
 	if (timeInSeconds/60 < 10) {
-		timeFormat = timeInMinutes.charAt(1) + ':' + timeInMinutes.charAt(3) + timeInMinutes.charAt(4);
+		timeFormat = timeForMinutes.charAt(1) + ':' + timeForSeconds.charAt(1) + timeForSeconds.charAt(2);
 	}
 	
 	else if (timeInSeconds/60 >= 10 && timeInSeconds/60/60 < 1) {
-				timeFormat = timeInMinutes.charAt(1) + timeInMinutes.charAt(2) + ':' + timeInMinutes.charAt(4) + timeInMinutes.charAt(5);
+				timeFormat = timeForMinutes.charAt(1) + timeForMinutes.charAt(2) + ':' + timeForSeconds.charAt(1) + timeForSeconds.charAt(2);
 	}
 	else if (timeInSeconds/60/60 > 1) {
 		var timeInHours = "'"+parseFloat(timeInSeconds/60/60)+ "'";
-		timeFormat = timeInHours.charAt(1) + ':' + timeInHours.charAt(3) + timeInHours.charAt(4) + ':' + timeInHours.charAt(5) + timeInHours.charAt(6);
+		timeFormat = timeInHours.charAt(1) + ':' + timeForMinutes.charAt(3) + timeForMinutes.charAt(4) + ':' + timeForSeconds.charAt(5) + timeForSeconds.charAt(6);
 	}
 	return timeFormat;
 };
@@ -142,7 +148,7 @@ var createSongRow = function(songNumber, songName, songLength) {
      var template =
         '<tr class="album-view-song-item">'
 	  + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' + '  <td class="song-item-title">' + songName + '</td>'
-      + '  <td class="song-item-duration">' + songLength + '</td>'
+      + '  <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>'
       + '</tr>'
       ;
  
@@ -294,7 +300,7 @@ var updatePlayerBarSong = function () {
 		$songDisplayMobile.text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
 		
 	
-		 
+		 setTotalTimeInPlayerBar(currentSongFromAlbum.duration);
 		
 		
 		
