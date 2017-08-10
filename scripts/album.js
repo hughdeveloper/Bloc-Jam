@@ -344,7 +344,7 @@ var setSong = function (songNumber) {
 
  var setVolume = function(volume) {
      if (currentSoundFile) {
-         currentSoundFile.setVolume(volume);
+			 currentSoundFile.setVolume(volume);
      }
  };
 
