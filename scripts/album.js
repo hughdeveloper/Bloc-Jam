@@ -3,7 +3,7 @@
 //template for song rows//
 
 var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
-    var offsetXPercent = seekBarFillRatio * 100;
+    var offsetXPercent = (seekBarFillRatio * 100);
     
     offsetXPercent = Math.max(0, offsetXPercent);
     offsetXPercent = Math.min(100, offsetXPercent);
@@ -82,7 +82,7 @@ var setCurrentTimeInPlayerBar = function (currentTime) {
 	
 	$currentTime.text(filterTimeCode(currentTime));
 };
-
+ 
 var setTotalTimeInPlayerBar = function (totalTime) {
 	var $totalTime = $('.currently-playing .total-time');
 	
@@ -396,7 +396,7 @@ var currentlyPlayingSongNumber = null;
 // holds the playing song object from the songs array
 var currentSongFromAlbum = null;
 var currentSoundFile = null;
-var currentVolume = 80;
+var currentVolume = 50;
 var $playPauseButtomBar = $('.main-controls .play-pause');
 
 var $previousButton = $('.main-controls .previous');
