@@ -63,9 +63,9 @@ var updateSeekBarWhileSongPlays = function() {
 		currentSoundFile.bind('timeupdate', function(event) {
 			var seekBarFillRatio = this.getTime() / this.getDuration();
 			var $seekBar = $('.seek-control .seek-bar');
-			
+			console.log(this.getTime());
 			updateSeekPercentage($seekBar, seekBarFillRatio);
-			setCurrentTimeInPlayerBar(currentSoundFile);
+			setCurrentTimeInPlayerBar(this.getTime());
 		});
 	}
 };
@@ -116,19 +116,18 @@ var filterTimeCode = function(timeInSeconds) {
 	var timeForMinutes = "'"+parseInt(timeInSeconds/60)+ "'";
 	var timeForSeconds = "'"+parseInt(((parseFloat(timeInSeconds/60))-(parseInt(timeInSeconds/60)))*60)+"'";
 	
+	//condition is less than 10 seconds
+	if (timeInSeconds < 10) {
+		timeFormat = '0' + ':' + '0' + parseInt(timeInSeconds);
+	}
 	
-	
-	
-	if (timeInSeconds/60 < 10) {
+	// condition is less than 10 min
+	else if (timeInSeconds/60 < 10) {
 		timeFormat = timeForMinutes.charAt(1) + ':' + timeForSeconds.charAt(1) + timeForSeconds.charAt(2);
 	}
-	
+	//condition is equal to or greater than 10 min while still being less than a hour
 	else if (timeInSeconds/60 >= 10 && timeInSeconds/60/60 < 1) {
 				timeFormat = timeForMinutes.charAt(1) + timeForMinutes.charAt(2) + ':' + timeForSeconds.charAt(1) + timeForSeconds.charAt(2);
-	}
-	else if (timeInSeconds/60/60 > 1) {
-		var timeInHours = "'"+parseFloat(timeInSeconds/60/60)+ "'";
-		timeFormat = timeInHours.charAt(1) + ':' + timeForMinutes.charAt(3) + timeForMinutes.charAt(4) + ':' + timeForSeconds.charAt(5) + timeForSeconds.charAt(6);
 	}
 	return timeFormat;
 };
