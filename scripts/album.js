@@ -77,26 +77,6 @@ var seek = function(time) {
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var setCurrentTimeInPlayerBar = function (currentTime) {
 	var $currentTime = $('.currently-playing .current-time');
 	
@@ -131,17 +111,6 @@ var filterTimeCode = function(timeInSeconds) {
 	}
 	return timeFormat;
 };
-
-
-
-
-
-
-
-
-
-
-
 
 var createSongRow = function(songNumber, songName, songLength) {
      var template =
