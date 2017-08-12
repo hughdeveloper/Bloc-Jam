@@ -119,7 +119,7 @@ var filterTimeCode = function(timeInSeconds) {
 	}
 	
 	// condition is less than 10 min
-	else if (timeInSeconds/60 < 10 && timeSeconds > 10) {
+	else if (timeInSeconds/60 < 10 && timeSeconds >= 10) {
 		timeFormat = timeForMinutes.charAt(1) + ':' + timeForSeconds.charAt(1) + timeForSeconds.charAt(2);
 	}
 	//condition is equal to or greater than 10 min while still being less than a hour
