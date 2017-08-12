@@ -1,5 +1,16 @@
 /* When coding you do not want to pollute the global atmosphere. It can lead to problems when coding with other poeple. This can be solved by making the whole document a in a function. There are other ways of solving this problem. */
+//current playing album
+var currentAlbum = null;
+//the song number that is playing
+var currentlyPlayingSongNumber = null;
+// holds the playing song object from the songs array
+var currentSongFromAlbum = null;
+var currentSoundFile = null;
+var currentVolume = 50;
+var $playPauseButtomBar = $('.main-controls .play-pause');
 
+var $previousButton = $('.main-controls .previous');
+var $nextButton = $('.main-controls .next');
 //template for song rows//
 
 var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
@@ -27,7 +38,8 @@ var setupSeekBars = function() {
 		 if ($(this).parent().attr('class') == 'seek-control') {
             seek(seekBarFillRatio * currentSoundFile.getDuration());
         } else {
-            setVolume(seekBarFillRatio * 100);   
+            setVolume(seekBarFillRatio * 100);
+			
         }
 		 
          updateSeekPercentage($(this), seekBarFillRatio);
@@ -45,7 +57,7 @@ var setupSeekBars = function() {
 			 if ($seekBar.parent().attr('class') == 'seek-control') {
                 seek(seekBarFillRatio * currentSoundFile.getDuration());   
             } else {
-                setVolume(seekBarFillRatio);
+                setVolume(seekBarFillRatio*100);
             }
  
              updateSeekPercentage($seekBar, seekBarFillRatio);
@@ -95,18 +107,23 @@ var filterTimeCode = function(timeInSeconds) {
 	
 	var timeForMinutes = "'"+parseInt(timeInSeconds/60)+ "'";
 	var timeForSeconds = "'"+parseInt(((parseFloat(timeInSeconds/60))-(parseInt(timeInSeconds/60)))*60)+"'";
+	var timeSeconds = parseInt(((parseFloat(timeInSeconds/60))-(parseInt(timeInSeconds/60)))*60);
 	
+	// if the time for minutes is above one and that the time in seconds are less than 10 seconds
+	if (timeInSeconds/60 > 1 && timeSeconds < 10) {
+		timeFormat = timeForMinutes.charAt(1) + ':0' + timeForSeconds.charAt(1);
+	}
 	//condition is less than 10 seconds
-	if (timeInSeconds < 10) {
-		timeFormat = '0' + ':' + '0' + parseInt(timeInSeconds);
+	else if (timeInSeconds/60 < 1 && timeSeconds < 10) {
+		timeFormat = '0' + ':0' + parseInt(timeInSeconds);
 	}
 	
 	// condition is less than 10 min
-	else if (timeInSeconds/60 < 10) {
+	else if (timeInSeconds/60 < 10 && timeSeconds > 10) {
 		timeFormat = timeForMinutes.charAt(1) + ':' + timeForSeconds.charAt(1) + timeForSeconds.charAt(2);
 	}
 	//condition is equal to or greater than 10 min while still being less than a hour
-	else if (timeInSeconds/60 >= 10 && timeInSeconds/60/60 < 1) {
+	else if (timeInSeconds/60 >= 10 && timeInSeconds/60/60 < 1 && timeSeconds > 10) {
 				timeFormat = timeForMinutes.charAt(1) + timeForMinutes.charAt(2) + ':' + timeForSeconds.charAt(1) + timeForSeconds.charAt(2);
 	}
 	return timeFormat;
@@ -345,7 +362,9 @@ var setSong = function (songNumber) {
  var setVolume = function(volume) {
      if (currentSoundFile) {
 			 currentSoundFile.setVolume(volume);
+		 
      }
+	 return currentVolume = volume;
  };
 
 var getSongNumberCell = function (number) {
@@ -389,18 +408,7 @@ var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause">
 
 // these are all in the global scope because it is used by muliple functions throughout the file
 
-//current playing album
-var currentAlbum = null;
-//the song number that is playing
-var currentlyPlayingSongNumber = null;
-// holds the playing song object from the songs array
-var currentSongFromAlbum = null;
-var currentSoundFile = null;
-var currentVolume = 50;
-var $playPauseButtomBar = $('.main-controls .play-pause');
 
-var $previousButton = $('.main-controls .previous');
-var $nextButton = $('.main-controls .next');
 
 
 
